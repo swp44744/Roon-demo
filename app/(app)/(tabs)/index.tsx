@@ -1,33 +1,24 @@
-import CustomTabView from "@/components/CustomTabView";
-import { Image, StyleSheet, Platform, View, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default () => {
   return (
-    <SafeAreaView edges={["bottom", "top"]}>
-      <View>
-        <Text>Hello</Text>
-        <CustomTabView />
-      </View>
+    <SafeAreaView edges={["bottom", "top"]} style={styles.container}>
+      <Text style={styles.text}>Coming soon..</Text>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
+  container: {
+    backgroundColor: "#050578",
+    flex: 1,
     alignItems: "center",
-    gap: 8,
+    justifyContent: "center",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
+  text: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "500",
   },
 });

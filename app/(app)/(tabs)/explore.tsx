@@ -1,20 +1,24 @@
-import { StyleSheet, Image, Platform } from "react-native";
-
+import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default () => {
-  return <SafeAreaView></SafeAreaView>;
+  return (
+    <SafeAreaView edges={["bottom", "top"]} style={styles.container}>
+      <Text style={styles.text}>Coming soon..</Text>
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
+  container: {
+    backgroundColor: "#050578",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
+  text: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "500",
   },
 });

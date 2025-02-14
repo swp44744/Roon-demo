@@ -41,8 +41,6 @@ export default () => {
     overflow: "hidden",
   }));
 
-  console.log("----> ", isLoading);
-
   return (
     <LinearGradient
       colors={["#000259", "#050578"]}
