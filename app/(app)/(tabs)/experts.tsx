@@ -7,14 +7,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import Header from "@/components/Header/Header";
 import SearchExpert from "@/components/Experts/SearchExpert";
 import Animated, {
-  FadeIn,
-  FadeInUp,
-  FadeOut,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-  ZoomIn,
-  ZoomOutEasyDown,
 } from "react-native-reanimated";
 import ExpertsLoadingShimmer from "@/components/ShimmerPlaceholder/Experts/ExpertsLoadingShimmer";
 import { Empty } from "@/components/Empty";
@@ -51,7 +46,6 @@ export default () => {
         <SafeAreaView>
           <Header
             title={"Experts"}
-            action={"search-outline"}
             onPress={toggleSearch}
           />
           <Animated.View style={[animatedStyle]}>

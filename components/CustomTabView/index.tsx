@@ -3,19 +3,19 @@ import { Tab } from "@/types/TabView";
 import React, { useRef, useState } from "react";
 import {
   View,
-  Text,
   FlatList,
   Dimensions,
   ScrollView,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  Pressable,
   StyleSheet,
 } from "react-native";
 import { Empty } from "../Empty";
+import QuestionsCard from "../Q&A/QuestionsCard";
+import QuestionsHeader from "../Q&A/QuestionsHeader";
+import TabItem from "./TabItem";
 
 const { width } = Dimensions.get("window");
-const TAB_HEADER_MARGIN = 8;
 
 type TabViewProps = {
   tabs: Tab[];
@@ -38,29 +38,33 @@ const CustomTabView = ({ tabs, content }: TabViewProps) => {
 
   const scrollHeaderToTab = (tabIndex: number): void => {
     if (!tabRef.current) return;
-  
+
     // Calculate the total width of all tabs before the selected tab
-    const totalWidth = tabs.slice(0, tabIndex).reduce(
-      (acc, tab) => acc + (tabWidths.current[tab.id] || 0), 
-      0
-    );
-  
+    const totalWidth = tabs
+      .slice(0, tabIndex)
+      .reduce((acc, tab) => acc + (tabWidths.current[tab.id] || 0), 0);
+
     // Get the width of the currently selected tab
     const tabWidth = tabWidths.current[tabs[tabIndex].id] || 0;
-  
+
     // Calculate the scroll offset to center the selected tab as much as possible
     // This ensures that when moving from left to right, the selected tab remains in the center of the header
     const offset = Math.max(0, totalWidth - width / 2 + tabWidth / 2);
-  
+
     // Scroll the tab bar to the calculated offset, ensuring a smooth animation
     tabRef.current.scrollToOffset({ offset, animated: true });
   };
-  
 
-  const handleMomentumScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>): void => {
+  const handleMomentumScrollEnd = (
+    event: NativeSyntheticEvent<NativeScrollEvent>
+  ): void => {
     const newIndex = Math.round(event.nativeEvent.contentOffset.x / width);
     setSelectedIndex(newIndex);
     scrollHeaderToTab(newIndex);
+  };
+
+  const handleOnLayout = (id: string, width: number) => {
+    tabWidths.current[id] = width;
   };
 
   return (
@@ -74,20 +78,14 @@ const CustomTabView = ({ tabs, content }: TabViewProps) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.tabContainer}
         renderItem={({ item, index }) => (
-          <Pressable
-            style={[
-              styles.tab,
-              {
-                backgroundColor: selectedIndex === index ? "#3736DA" : "transparent",
-                borderColor: selectedIndex === index ? "transparent" : "#A0A3FF4D",
-              },
-            ]}
-            onPress={() => handleTabPress(index)}
-            onLayout={(event) => (tabWidths.current[item.id] = event.nativeEvent.layout.width)}
-          >
-            <Text numberOfLines={1} style={styles.text}>{item.title}</Text>
-          </Pressable>
-        )}
+            <TabItem
+              item={item}
+              index={index}
+              selectedIndex={selectedIndex}
+              handleTabPress={handleTabPress}
+              onLayout={handleOnLayout}
+            />
+          )}
       />
 
       {/* Tab Content */}
@@ -99,20 +97,24 @@ const CustomTabView = ({ tabs, content }: TabViewProps) => {
         onMomentumScrollEnd={handleMomentumScrollEnd}
         showsHorizontalScrollIndicator={false}
       >
-        {tabs.map((tab) => {
+        {tabs.map((tab, index) => {
           const questions = content[tab.id] || [];
+          const isVisible = index === selectedIndex;
           return (
-            <View key={tab.id} style={styles.contentWrapper}>
+            <View
+              key={tab.id}
+              style={[
+                styles.contentWrapper,
+                // { position: isVisible ? 'relative' : 'absolute', opacity: isVisible ? 1 : 0 }
+              ]}
+            >
               <FlatList
                 data={questions}
                 keyExtractor={(item) => item.id}
-                ListHeaderComponent={<Text style={styles.header}>Popular Q&As</Text>}
-                renderItem={({ item }) => (
-                  <View style={styles.questionContainer}>
-                    <Text style={styles.text}>{item.question}</Text>
-                  </View>
-                )}
+                ListHeaderComponent={<QuestionsHeader />}
+                renderItem={({ item }) => <QuestionsCard item={item} />}
                 ListEmptyComponent={<Empty />}
+                contentContainerStyle={styles.listContainer}
               />
             </View>
           );
@@ -131,35 +133,22 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexGrow: 1,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
   },
-  tab: {
-    alignItems: "center",
-    paddingHorizontal: 18,
-    paddingVertical: 14,
-    borderRadius: 100,
-    borderWidth: 1,
-    marginHorizontal: TAB_HEADER_MARGIN,
-  },
+
   text: {
     color: "white",
     fontSize: 16,
     fontWeight: "500",
     lineHeight: 24,
+    flex: 1,
   },
   contentWrapper: {
     width,
     padding: 16,
+    flex: 1,
   },
-  header: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  questionContainer: {
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
+  listContainer: {
+    flexGrow: 1
+  }
 });

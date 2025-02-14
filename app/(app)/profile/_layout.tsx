@@ -5,7 +5,7 @@ import ProfileLoading from "@/components/Profile/ProfileLoading";
 import { useProfile } from "@/hooks/useProfile";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { StyleSheet, FlatList } from "react-native";
 
 const Profile = () => {
   const params = useLocalSearchParams();
@@ -34,7 +34,6 @@ const Profile = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#050578",
-    paddingBottom: 60,
   },
 });
 

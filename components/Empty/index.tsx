@@ -33,6 +33,7 @@ const styles =
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: 32,
+      paddingBottom: 16
     },
     icon: {
       fontSize: 48,

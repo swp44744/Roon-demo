@@ -4,15 +4,14 @@ import { Ionicons } from "@expo/vector-icons";
 
 type HeaderProps = {
   title: string,
-  action: string
   onPress: () => void
 }
-const Header = ({title, action, onPress}: HeaderProps) => {
+const Header = ({title, onPress}: HeaderProps) => {
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.header}>{title}</Text>
       <Pressable onPress={onPress}>
-      <Ionicons name={action} color="white" size={24} />
+      <Ionicons name="search-outline" color="white" size={24} />
       </Pressable>
     </View>
   );
@@ -24,7 +23,9 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    paddingBottom: 8
+    
   },
   header: {
     fontSize: 18,
