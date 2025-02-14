@@ -1,7 +1,5 @@
 import React from "react";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
+import { ActivityIndicator, FlatList, StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,

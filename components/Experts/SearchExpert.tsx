@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   clearButton: {
-    marginLeft: 10, // Spacing between input and button
+    marginLeft: 10,
   },
 });
 
