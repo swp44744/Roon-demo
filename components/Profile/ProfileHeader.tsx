@@ -25,8 +25,8 @@ export default ProfileHeader;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#162292",
-    height: 52,
-    width: 52,
+    height: 45,
+    width: 45,
     borderRadius: 26,
     justifyContent: "center",
     alignItems: "center",

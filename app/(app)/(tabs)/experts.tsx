@@ -1,86 +1,71 @@
-import { ActivityIndicator, FlatList, StyleSheet } from "react-native";
 import React from "react";
-import { useExperts } from "@/hooks/useExperts";
+import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ExpertCard from "@/components/Experts/ExpertCard";
 import { LinearGradient } from "expo-linear-gradient";
-import Header from "@/components/Header/Header";
-import SearchExpert from "@/components/Experts/SearchExpert";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+
+import { useExperts } from "@/hooks/useExperts";
+import ExpertCard from "@/components/Experts/ExpertCard";
+import Header from "@/components/Header/Header";
+import SearchExpert from "@/components/Experts/SearchExpert";
 import ExpertsLoadingShimmer from "@/components/ShimmerPlaceholder/Experts/ExpertsLoadingShimmer";
 import { Empty } from "@/components/Empty";
+import Container from "@/components/Common/Container";
 
-export default () => {
+export default function ExpertsScreen() {
   const { experts, handleEndReached, isFetchingNextPage, isLoading } =
     useExperts({ specialty: "" });
-  const height = useSharedValue(0);
 
-  const toggleSearch = () => {
-    const isVisible = height.value > 0;
-    height.value = withTiming(isVisible ? 0 : 70, { duration: 500 });
-  };
+  const searchHeight = useSharedValue(0);
 
-  const handleScrollBegin = () => {
-    const isVisible = height.value > 0;
-    if (isVisible) {
-      height.value = withTiming(0, { duration: 500 });
-    }
+  const toggleSearchVisibility = () => {
+    searchHeight.value = withTiming(searchHeight.value > 0 ? 0 : 70, {
+      duration: 500,
+    });
   };
 
   const animatedStyle = useAnimatedStyle(() => ({
-    height: height.value,
+    height: searchHeight.value,
     overflow: "hidden",
   }));
 
   return (
-    <LinearGradient
-      colors={["#000259", "#050578"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 0 }}
-      style={styles.container}
-    >
-        <SafeAreaView>
-          <Header
-            title={"Experts"}
-            onPress={toggleSearch}
-          />
-          <Animated.View style={[animatedStyle]}>
-            <SearchExpert />
-          </Animated.View>
-          <FlatList
-            data={experts}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <ExpertCard item={item} />}
-            numColumns={2}
-            columnWrapperStyle={styles.column}
-            contentContainerStyle={styles.content}
-            onEndReached={handleEndReached}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={
-              isFetchingNextPage ? <ActivityIndicator size="small" /> : null
-            }
-            showsVerticalScrollIndicator={false}
-            onScrollBeginDrag={handleScrollBegin}
-            ListEmptyComponent={
-              isLoading ? <ExpertsLoadingShimmer /> : <Empty />
-            }
-          />
-        </SafeAreaView>
-    </LinearGradient>
+    <Container>
+      <Header title="Experts" onPress={toggleSearchVisibility} />
+      <Animated.View style={animatedStyle}>
+        <SearchExpert />
+      </Animated.View>
+
+      <FlatList
+        data={experts}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <ExpertCard item={item} />}
+        numColumns={2}
+        columnWrapperStyle={styles.column}
+        contentContainerStyle={styles.content}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+        }
+        ListEmptyComponent={isLoading ? <ExpertsLoadingShimmer /> : <Empty />}
+        showsVerticalScrollIndicator={false}
+        onScrollBeginDrag={toggleSearchVisibility}
+      />
+    </Container>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  text: {
-    color: "#fff",
-    fontSize: 20,
+  safeArea: {
+    flex: 1,
   },
   content: {
     paddingHorizontal: 16,
