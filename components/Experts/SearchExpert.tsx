@@ -46,16 +46,16 @@ const styles = StyleSheet.create({
     height: 50,
     width: "100%",
     borderRadius: 10,
-    backgroundColor: "#6495ED",
+    backgroundColor: "#23248d",
     paddingHorizontal: 15,
     color: "white",
     fontSize: 16,
 
-    shadowColor: "#000",
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.3,
     shadowRadius: 4,
-    elevation: 5, // For Android shadow
+    elevation: 5,
   },
 });
 

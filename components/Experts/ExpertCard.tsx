@@ -14,7 +14,12 @@ const imageWidth = (width - 48) / 2;
 const ExpertCard = ({ item }: ExpertCardProps) => {
 
   const navigateToProfile = () => {
-    router.navigate("profile");
+    router.navigate({
+        pathname: "profile",
+        params: {
+            expertId: item.id
+        }
+    })
   };
 
   

@@ -15,7 +15,7 @@ interface Respondent {
     respondent_background: string;
 }
 
-interface Question {
+export interface Question {
     id: string;
     question: string;
     display_order: number;
@@ -40,11 +40,11 @@ interface Specialty {
     display_order: number;
 }
 
-interface Label {
+export interface Label {
     condition_id: string;
 }
 
-interface Data {
+export interface ProfileResponse {
     count: number;
     next: string;
     previous: string | null;

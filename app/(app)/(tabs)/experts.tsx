@@ -78,7 +78,6 @@ export default () => {
             }
           />
         </SafeAreaView>
-      {/* </Animated.View> */}
     </LinearGradient>
   );
 };

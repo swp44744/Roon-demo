@@ -1,22 +1,40 @@
+import CustomTabView from "@/components/CustomTabView";
+import NoProfileData from "@/components/Profile/NoProfileData";
+import ProfileHeaderSection from "@/components/Profile/ProfileImage";
+import ProfileLoading from "@/components/Profile/ProfileLoading";
+import { useProfile } from "@/hooks/useProfile";
+import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 
 const Profile = () => {
+  const params = useLocalSearchParams();
+  const { isLoading, data } = useProfile({
+    expertId: params.expertId as string,
+  });
+
+  if (isLoading) return <ProfileLoading />
+
+  if (!data) return <NoProfileData />
+
   return (
-    <SafeAreaView style={styles.container} edges={["bottom", "top"]}>
-    </SafeAreaView>
+    <FlatList
+      data={[{ id: "tabs" }]}
+      keyExtractor={(item) => item.id}
+      contentContainerStyle={styles.container}
+      ListHeaderComponent={<ProfileHeaderSection data={data} />}
+      renderItem={() => (
+        <CustomTabView tabs={data.tabs} content={data.content} />
+      )}
+      showsVerticalScrollIndicator={false}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "space-between",
-    gap: 16,
-  },
-  trackList: {
-    padding: 16,
+    backgroundColor: "#050578",
+    paddingBottom: 60,
   },
 });
 

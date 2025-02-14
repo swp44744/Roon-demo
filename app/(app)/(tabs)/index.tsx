@@ -1,8 +1,16 @@
-import { Image, StyleSheet, Platform } from "react-native";
+import CustomTabView from "@/components/CustomTabView";
+import { Image, StyleSheet, Platform, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default () => {
-  return <SafeAreaView edges={["bottom", "top"]}></SafeAreaView>;
+  return (
+    <SafeAreaView edges={["bottom", "top"]}>
+      <View>
+        <Text>Hello</Text>
+        <CustomTabView />
+      </View>
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
